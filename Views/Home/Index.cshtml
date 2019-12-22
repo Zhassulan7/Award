@@ -1,0 +1,37 @@
+﻿@model Awards.Models.ViewModels.MainPage
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Users.Count() != 0)
+        {
+            @foreach (var item in Model.Users)
+            {
+        <tr>
+            <th scope="row">@item.Id</th>
+            <td>@item.Name</td>
+            <td>@item.Age</td>
+            @if (item.Awards.Count != 0)
+            {
+                <td>
+                    @foreach (var award in item.Awards)
+                    {
+                        <span>@award.Title; </span>
+                    }
+                </td>
+            }
+        </tr>
+            }
+        }
+    </tbody>
+</table>
