@@ -18,8 +18,35 @@ namespace Awards.Controllers
         {
             return View();
         }
+        [HttpPost]
         public IActionResult AddUser(User user)
         {
+            user.Age = user.BirthDate.Year - DateTime.Today.Year;
+            user.Age *= -1;
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public IActionResult DeleteUser(int Id)
+        {
+            var user = _context.Users.FirstOrDefault(u=>u.Id == Id);
+            _context.Remove(user);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult EditUser(int Id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == Id);
+            return View(user);
+        }
+        [HttpPost]
+        public IActionResult EditUser(User user)
+        {
+            user.Age = user.BirthDate.Year - DateTime.Today.Year;
+            user.Age *= -1;
+            _context.Users.Update(user);
+            _context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
     }

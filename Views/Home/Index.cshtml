@@ -10,6 +10,7 @@
             <th scope="col">First</th>
             <th scope="col">Last</th>
             <th scope="col">Handle</th>
+            <th scope="col">Изменить</th>
         </tr>
     </thead>
     <tbody>
@@ -21,7 +22,7 @@
             <th scope="row">@item.Id</th>
             <td>@item.Name</td>
             <td>@item.Age</td>
-            @if (item.Awards.Count != 0)
+            @if (item.Awards != null && item.Awards.Count() != 0)
             {
                 <td>
                     @foreach (var award in item.Awards)
@@ -30,6 +31,18 @@
                     }
                 </td>
             }
+            <td>
+                <form asp-action="DeleteUser" asp-controller="User" method="post">
+                    <input type="hidden" name="Id" value="@item.Id" />
+                    <input type="submit" value="Удалить пользователя" />
+                </form>
+            </td>
+            <td>
+                <form asp-action="EditUser" asp-controller="User" method="get">
+                    <input type="hidden" name="Id" value="@item.Id" />
+                    <input type="submit" value="Изменить данные" />
+                </form>
+            </td>
         </tr>
             }
         }

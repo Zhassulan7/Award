@@ -22,18 +22,21 @@ namespace Awards.Controllers
             mainPage.Users = _context.Users.ToList();
             mainPage.Awards = _context.Awards.ToList();
             var usersAwards = _context.UsersAwards.ToList();
-            foreach (var item in mainPage.Users)
+            if (usersAwards.Count != 0)
             {
-                item.Awards.Add(new Award { Id = usersAwards.FirstOrDefault(a => a.UserId == item.Id).AwardId});
-            }
-            for (int i = 0; i < mainPage.Users.Count() - 1; i++)
-            {
-                foreach (var item in mainPage.Awards)
+                foreach (var item in mainPage.Users)
                 {
-                    mainPage.Users[i].Awards.FirstOrDefault(a => a.Id == item.Id).Title = item.Title;
-                    mainPage.Users[i].Awards.FirstOrDefault(a => a.Id == item.Id).Description = item.Description;
-                }               
-            }
+                    item.Awards.Add(new Award { Id = usersAwards.FirstOrDefault(a => a.UserId == item.Id).AwardId });
+                }
+                for (int i = 0; i < mainPage.Users.Count() - 1; i++)
+                {
+                    foreach (var item in mainPage.Awards)
+                    {
+                        mainPage.Users[i].Awards.FirstOrDefault(a => a.Id == item.Id).Title = item.Title;
+                        mainPage.Users[i].Awards.FirstOrDefault(a => a.Id == item.Id).Description = item.Description;
+                    }
+                }
+            }   
             return View(mainPage);
         }
 
