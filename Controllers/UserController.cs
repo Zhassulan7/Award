@@ -49,5 +49,12 @@ namespace Awards.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
+        [HttpPost]
+        public IActionResult AwardUser(int userId, int awardId)
+        {
+            _context.UsersAwards.Add(new UsersAwards() { UserId = userId, AwardId = awardId });
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

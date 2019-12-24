@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Awards.Models;
 using Awards.Models.ViewModels;
+using System.Data.SqlClient;
 
 namespace Awards.Controllers
 {
@@ -22,24 +23,20 @@ namespace Awards.Controllers
             mainPage.Users = _context.Users.ToList();
             mainPage.Awards = _context.Awards.ToList();
             var usersAwards = _context.UsersAwards.ToList();
-            if (usersAwards.Count != 0)
+            foreach (var user in mainPage.Users)
             {
-                foreach (var item in mainPage.Users)
+                user.Awards = new List<Award>();
+                foreach (var connecter in usersAwards)
                 {
-                    item.Awards.Add(new Award { Id = usersAwards.FirstOrDefault(a => a.UserId == item.Id).AwardId });
-                }
-                for (int i = 0; i < mainPage.Users.Count() - 1; i++)
-                {
-                    foreach (var item in mainPage.Awards)
+                    if (connecter.UserId == user.Id)
                     {
-                        mainPage.Users[i].Awards.FirstOrDefault(a => a.Id == item.Id).Title = item.Title;
-                        mainPage.Users[i].Awards.FirstOrDefault(a => a.Id == item.Id).Description = item.Description;
-                    }
+                        user.Awards.AddRange(mainPage.Awards.Where(a => a.Id == connecter.AwardId).ToList());
+                    }                 
                 }
-            }   
+            }
             return View(mainPage);
         }
-
+        
         public IActionResult Privacy()
         {
             return View();
